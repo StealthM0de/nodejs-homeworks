@@ -25,9 +25,9 @@ router.delete("/:contactId", ctrlWrapper(deleteContactById));
 
 /* PUT: // http://localhost:3000/api/contacts/:contactId 
 {
-    "name": "Joanna Shaw",
-    "email": "joannashaw@example.com",
-    "phone": "(639) 777-8819"
+    "name": "Danica Fallorina",
+    "email": "danicafallorina@example.com",
+    "phone": "(639) 222-2222"
 } 
 */
 router.put("/:contactId", ctrlWrapper(updateContactById));
