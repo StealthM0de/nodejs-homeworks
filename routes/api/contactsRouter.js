@@ -10,34 +10,35 @@ const router = express.Router();
 router.get("/", ctrlWrapper(getAllContacts));
 
 /* GET: // http://localhost:3000/api/contacts/:contactId */
-router.get("/:contactId", ctrlWrapper(getContactById));
+router.get("/:contactId", authenticateToken, ctrlWrapper(getContactById));
 
 /* POST: // http://localhost:3000/api/contacts/ 
 {
-    "name": "Jed Fallorina",
-    "email": "JedFallorina@example.com",
+    "name": " Jed Fallorina",
+    "email": "jedfallorina@example.com",
     "phone": "(639) 555-5555"
 } 
 */
-router.post("/", ctrlWrapper(addContact));
+router.post("/", authenticateToken, ctrlWrapper(addContact));
 
 /* DELETE: // http://localhost:3000/api/contacts/:contactId */
-router.delete("/:contactId", ctrlWrapper(deleteContactById));
+router.delete("/:contactId", authenticateToken, ctrlWrapper(deleteContactById));
 
 /* PUT: // http://localhost:3000/api/contacts/:contactId 
 {
-    "name": "Danica Fallorina",
-    "email": "danicafallorina@example.com",
-    "phone": "(639) 222-2222"
+    "name": "Joanna Shaw",
+    "email": "joannashaw@example.com",
+    "phone": "(639) 777-8819"
 } 
 */
-router.put("/:contactId", ctrlWrapper(updateContactById));
+router.put("/:contactId", authenticateToken, ctrlWrapper(updateContactById));
 
 /* PATCH: // http://localhost:3000/api/contacts/:contactId/favorite
 {
     "favorite": true,
 }
 */
-router.patch("/:contactId/favorite", ctrlWrapper(updateStatusContact));
+// prettier-ignore
+router.patch("/:contactId/favorite", authenticateToken, ctrlWrapper(updateStatusContact));
 
 export { router };
