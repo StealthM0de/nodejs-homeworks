@@ -7,12 +7,12 @@ import path from "path";
 import fs from "fs/promises";
 import { User } from "../models/usersModel.js";
 // prettier-ignore
-import { signupValidation, subscriptionValidation, emailValidation } from "../validations/validation.js";
+import { emailValidation, signupValidation, subscriptionValidation } from "../validations/validation.js";
 import { httpError } from "../helpers/httpError.js";
 import { sendEmail } from "../helpers/sendEmail.js";
 import { v4 as uuid4 } from "uuid";
 
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY, PORT } = process.env;
 
 const signupUser = async (req, res) => {
   const { email, password } = req.body;
@@ -141,12 +141,12 @@ const updateAvatar = async (req, res) => {
 
   await Jimp.read(oldPath).then((image) =>
     // image.resize(250, 250).write(oldPath)
-    image.cover(350, 350).write(oldPath)
+    image.cover(250, 250).write(oldPath)
   );
 
   const extension = path.extname(originalname);
-
   const filename = `${_id}${extension}`;
+
   const newPath = path.join("public", "avatars", filename);
   await fs.rename(oldPath, newPath);
 
