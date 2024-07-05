@@ -40,7 +40,6 @@ router.patch("/", authenticateToken, ctrlWrapper(updateUserSubscription));
     form-data
     avatar,file : image
 */
-
 // prettier-ignore
 router.patch("/avatars", authenticateToken, upload.single("avatar"), ctrlWrapper(updateAvatar));
 
