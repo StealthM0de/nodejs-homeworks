@@ -34,10 +34,21 @@ const signupUser = async (req, res) => {
   // Create a link to the user's avatar with gravatar
   const avatarURL = gravatar.url(email, { protocol: "http" });
 
+  // Create a verificationToken for the user
+  const verificationToken = uuid4();
+
   const newUser = await User.create({
     email,
     password: hashPassword,
     avatarURL,
+    verificationToken,
+  });
+
+  // Send an email to the user's mail and specify a link to verify the email (/users/verify/:verificationToken) in the message
+  await sendEmail({
+    to: email,
+    subject: "Action Required: Verify Your Email",
+    html: `<a target="_blank" href="http://localhost:${PORT}/api/users/verify/${verificationToken}">Click to verify email</a>`,
   });
 
   // Registration success response
@@ -46,6 +57,7 @@ const signupUser = async (req, res) => {
       email: newUser.email,
       subscription: newUser.subscription,
       avatarURL: newUser.avatarURL,
+      verificationToken,
     },
   });
 };
