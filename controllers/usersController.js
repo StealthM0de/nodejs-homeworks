@@ -7,8 +7,10 @@ import path from "path";
 import fs from "fs/promises";
 import { User } from "../models/usersModel.js";
 // prettier-ignore
-import { signupValidation, subscriptionValidation } from "../validations/validation.js";
+import { signupValidation, subscriptionValidation, emailValidation } from "../validations/validation.js";
 import { httpError } from "../helpers/httpError.js";
+import { sendEmail } from "../helpers/sendEmail.js";
+import { v4 as uuid4 } from "uuid";
 
 const { SECRET_KEY } = process.env;
 

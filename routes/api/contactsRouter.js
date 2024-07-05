@@ -7,16 +7,16 @@ import { authenticateToken } from "../../middlewares/authenticateToken.js";
 const router = express.Router();
 
 /* GET: // http://localhost:3000/api/contacts */
-router.get("/", ctrlWrapper(getAllContacts));
+router.get("/", authenticateToken, ctrlWrapper(getAllContacts));
 
 /* GET: // http://localhost:3000/api/contacts/:contactId */
 router.get("/:contactId", authenticateToken, ctrlWrapper(getContactById));
 
 /* POST: // http://localhost:3000/api/contacts/ 
 {
-    "name": "Marvin Pacis",
-    "email": "marvinpacis@example.com",
-    "phone": "(639) 840-6611"
+    "name": "Jed Fallorina",
+    "email": "jedfallorina@example.com",
+    "phone": "(639) 555-5555"
 } 
 */
 router.post("/", authenticateToken, ctrlWrapper(addContact));
