@@ -157,5 +157,56 @@ const updateAvatar = async (req, res) => {
   res.status(200).json({ avatarURL });
 };
 
+const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  const user = await User.findOne({ verificationToken });
+
+  // Verification user Not Found
+  if (!user) {
+    throw httpError(400, "User not found");
+  }
+
+  await User.findByIdAndUpdate(user._id, {
+    verify: true,
+    verificationToken: null,
+  });
+
+  // Verification success response
+  res.json({
+    message: "Verification successful",
+  });
+};
+
+const resendVerifyEmail = async (req, res) => {
+  const { email } = req.body;
+
+  // Resending a email validation error
+  const { error } = emailValidation.validate(req.body);
+  if (error) {
+    throw httpError(400, error.message);
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw httpError(404, "The provided email address could not be found");
+  }
+
+  // Resend email for verified user
+  if (user.verify) {
+    throw httpError(400, "Verification has already been passed");
+  }
+
+  await sendEmail({
+    to: email,
+    subject: "Action Required: Verify Your Email",
+    html: `<a target="_blank" href="http://localhost:${PORT}/api/users/verify/${user.verificationToken}">Click to verify email</a>`,
+  });
+
+  // Resending a email success response
+  res.json({ message: "Verification email sent" });
+};
+
 // prettier-ignore
-export { signupUser, loginUser, logoutUser, getCurrentUsers, updateUserSubscription, updateAvatar};
+export { signupUser, loginUser, logoutUser, getCurrentUsers, updateUserSubscription, updateAvatar, verifyEmail, resendVerifyEmail};
